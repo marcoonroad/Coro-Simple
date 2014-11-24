@@ -17,7 +17,7 @@ my $next = iter 5 ... 1;
 
 my $item;
 
-# loop until $item becomes Nil,
+# loop until $item becomes False,
 # delaying 1 second by loop
 sleep ok say $item while $item = $next( );
 
