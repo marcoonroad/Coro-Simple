@@ -12,9 +12,9 @@ my &iter = coro -> @array {
 my $next = iter 5 ... 1;
 
 my $item;
-# loop until $item becomes Nil
-sleep say $item while $item = $next( );
 
-# Note: some bug doesn't let you yields the number 0...
+# loop until $item becomes Nil,
+# delaying 1 second by loop
+sleep say $item while $item = $next( );
 
 # end of test

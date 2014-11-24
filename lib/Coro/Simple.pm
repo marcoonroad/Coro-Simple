@@ -20,6 +20,4 @@ module Coro::Simple {
     }
 }
 
-# Note: some bug doesn't let you yields the number 0...
-
 # end of module
