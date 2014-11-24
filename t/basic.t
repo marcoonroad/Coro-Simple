@@ -1,7 +1,11 @@
 #!/usr/bin/perl6
 
 use v6;
+
+use Test;
 use Coro::Simple;
+
+plan 5;
 
 # iterator example
 my &iter = coro -> @array {
@@ -15,6 +19,6 @@ my $item;
 
 # loop until $item becomes Nil,
 # delaying 1 second by loop
-sleep say $item while $item = $next( );
+sleep ok say $item while $item = $next( );
 
 # end of test

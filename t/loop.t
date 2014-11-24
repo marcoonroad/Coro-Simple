@@ -1,7 +1,11 @@
 #!/usr/bin/perl6
 
 use v6;
+
+use Test;
 use Coro::Simple;
+
+plan 4;
 
 # looping example
 my $times = coro -> $max {
@@ -14,15 +18,15 @@ my $times = coro -> $max {
 # generator function
 my $loop = $times(3);
 
-$loop( );
+ok $loop( );
 
 sleep 1;
-$loop( );
+ok $loop( );
 
 sleep 1;
-$loop( );
+ok $loop( );
 
 sleep 1;
-$loop( ); # here, the coroutine is dead
+ok not $loop( ); # here, the coroutine is dead
 
 # end of test
