@@ -16,10 +16,10 @@ module Coro::Simple {
 		    $result = @yields[ $index - 1 ];
 		}
 		else {
-		    $result = False;
+		    $result = False; # I just don't like Null references
 		}
 		$result;
-	    }; # I just don't like null references
+	    };
 	}
     }
 
