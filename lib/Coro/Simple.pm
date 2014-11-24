@@ -10,7 +10,16 @@ module Coro::Simple {
 	    my @yields := gather block @args.flat;
 	    my $index   = 0;
 	    # so, will returns the generator
-	    return -> { @yields[ $index++ ] or False; }; # I just don't like null references
+	    return -> {
+		my $result;
+		if defined @yields[ $index++ ] {
+		    $result = @yields[ $index - 1 ];
+		}
+		else {
+		    $result = False;
+		}
+		$result;
+	    }; # I just don't like null references
 	}
     }
 

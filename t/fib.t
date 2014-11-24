@@ -13,7 +13,7 @@ my &iter = coro -> @array {
 }
 
 # generator function
-my $next = iter ^2, *+* ... *;
+my $next = iter ^2, *+* ... *; # lazy fibonacci sequence
 
 # will generates the first 15
 # numbers from fibonacci sequence
