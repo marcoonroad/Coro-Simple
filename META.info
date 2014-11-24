@@ -1,7 +1,7 @@
 {
     "name"        : "Coro::Simple",
     "version"     : "*",
-    "description" : "Simple coroutines for Perl 6 inspired on Lua's coroutine.wrap / coroutine.yield functions.",
+    "description" : "Simple coroutines for Perl 6 inspired on Lua coroutine.wrap / coroutine.yield functions.",
     "author"      : "Marco Aurélio da Silva",
     "depends"     : [ ],
     "source-url"  : "git://github.com/marcoonroad/Coro-Simple.git"
