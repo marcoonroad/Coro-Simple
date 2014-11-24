@@ -1,4 +1,4 @@
 Coro-Simple
 ===========
 
-Simple coroutines for Perl 6 based on lazy lists behaviour.
+Simple coroutines for Perl 6 inspired on Lua's coroutine.wrap / coroutine.yield functions.
