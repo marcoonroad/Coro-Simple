@@ -16,7 +16,8 @@ module Coro::Simple {
 
     # yields multiple values, called inside an arrow block
     sub yield (*@args) is export {
-	take @args.list;
+	take @args.list if @args;
+	take True unless @args;
     }
 }
 
