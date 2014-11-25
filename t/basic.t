@@ -2,6 +2,8 @@
 
 use v6;
 
+# the first test :)
+
 use Test;
 use Coro::Simple;
 
@@ -19,6 +21,10 @@ my $item;
 
 # loop until $item becomes False,
 # delaying 1 second by loop
-sleep ok say $item while $item = $next( );
+while $item = $next( ) {
+    sleep 0.5;
+    ok $item;
+    say $item;
+}
 
 # end of test

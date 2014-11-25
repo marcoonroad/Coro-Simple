@@ -16,17 +16,18 @@ module Coro::Simple {
 		    $result = @yields[ $index - 1 ];
 		}
 		else {
-		    $result = False; # I just don't like Null references
+		    $result = False; # I just don't like null :P
 		}
 		$result;
 	    };
 	}
     }
 
-    # yields multiple values, called inside an arrow block
-    sub yield (*@args) is export {
-	if @args {
-	    take @args.list;
+    # can yields multiple values, e.g. but they need to
+    # be an array or hash. called inside an arrow block
+    sub yield ($value?) is export {
+	if defined $value {
+	    take $value;
 	}
 	else {
 	    take True;

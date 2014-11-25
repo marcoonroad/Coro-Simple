@@ -2,6 +2,8 @@
 
 use v6;
 
+# a test just for loop
+
 use Test;
 use Coro::Simple;
 
@@ -20,13 +22,13 @@ my $loop = $times(3);
 
 ok $loop( );
 
-sleep 1;
+sleep 0.5;
 ok $loop( );
 
-sleep 1;
+sleep 0.5;
 ok $loop( );
 
-sleep 1;
+sleep 0.5;
 ok not $loop( ); # here, the coroutine is dead
 
 # end of test
