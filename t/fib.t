@@ -9,9 +9,9 @@ use Coro::Simple;
 
 plan 15;
 
-# iterator example
-my &iter = coro -> @array {
-    for @array -> $x { yield $x }
+# lazy iterator example
+my &iter = coro -> @seq {
+    for @seq -> $elem { yield $elem }
 }
 
 # generator function
