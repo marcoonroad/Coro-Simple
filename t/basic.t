@@ -20,7 +20,7 @@ my $next = iter 5 ... 1;
 my $item;
 
 # loop until $item becomes False,
-# delaying 1 second by loop
+# delaying 0.5 second by loop
 while $item = $next( ) {
     sleep 0.5;
     ok $item;
