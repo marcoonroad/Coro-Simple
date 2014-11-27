@@ -19,7 +19,7 @@ The *gather* / *take* have some interesting features:
 Based on this, the *coro* / *yield* also have some features:
 
 * The coroutine don't care about how many calls down are to find a *yield*.
-* Only generates one value per cycle, but you can pass an anonymous array to avoid it.
+* Only generates one value per cycle, but you can yield an anonymous array to avoid it.
 * You can pass a stream to a coroutine as argument.
 
 
