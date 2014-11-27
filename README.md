@@ -61,14 +61,14 @@ coro -> @params { ... }; # variadic arguments
 
 ```
 
-##### Coroutine: Constructor #####
 
+##### Coroutine: Constructor #####
 
 Later, the *coro* keyword return a constructor, but why it returns a constructor?
 Well, for two reasons:
 
 * Code reuse: you can use the coroutine on different places, without declare again it every time.
-* Reset / Restore to initial state: when de coroutine dies, you can just assign again the generator.
+* Reset / Restore to initial state: when the coroutine dies, you can just assign it again to the generator.
 
 Some example (Python-like iter function):
 
@@ -82,7 +82,7 @@ my &iter = coro -> @xs {
 
 ```
 
-The *iter* function above will receives a array and returns a generator function. Well remembered, now we see generators.
+The *iter* function above will receives a array and returns a generator function. Well remembered, now we will see generators.
 
 ##### Coroutine: Generator #####
 
@@ -129,7 +129,7 @@ my &filter = coro -> @xs {
 # Usage:
 #
 # sub incr ($x) { $x + 1 }      # >>> number.
-# sub even ($x) { $x % 2 == 0 } # >>> boolean. use "$x %% 2" if you wish
+# sub even ($x) { $x % 2 == 0 } # >>> boolean. use "$x %% 2" if you wish...
 #
 # my $generator = transform @array.list, &incr;
 # my $filtered  = filter @array.list, &even;
@@ -143,3 +143,5 @@ TODO
 
 * Insert more examples here (show the code).
 * Document the module with Perl 6's Pods.
+
+End of it.
