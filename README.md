@@ -1,7 +1,7 @@
 Coro-Simple
 ===========
 
-Simple coroutines for Perl 6, inspired on Lua *coroutine.wrap* / *coroutine.yield* functions.
+Simple coroutines for Perl 6, inspired on Lua's *coroutine.wrap* / *coroutine.yield* functions.
 
 This is a module for asymmetric coroutines, a.k.a coroutines that suspend their flows
 with *yield*, but not (instead) change the control flow to another coroutine with *tranfer* (these
