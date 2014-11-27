@@ -35,30 +35,24 @@ it will takes (internally) the True value.
 
 ##### Coroutine: Declaration #####
 
-So, let's go see some examples:
+So, let's go see some examples.
 
 First, you declares a coroutine with:
 
 ```perl6
-
 coro { ... }; # zero-arity coroutine
-
 ```
 
 Or with:
 
 ```perl6
-
 coro -> $param1, $param2, $param3 { ... }; # 3-arity coroutine
-
 ```
 
 Or even with:
 
 ```perl6
-
 coro -> @params { ... }; # variadic arguments
-
 ```
 
 
@@ -73,16 +67,15 @@ Well, for two reasons:
 Some example (Python-like iter function):
 
 ```perl6
-
 my &iter = coro -> @xs {
     for @xs -> $x {
         yield $x;
     }
 }
-
 ```
 
-The *iter* function above will receives a array and returns a generator function. Well remembered, now we will see generators.
+The *iter* function above will receives a flattened array and returns a generator function. Well remembered,
+now we will see generators.
 
 ##### Coroutine: Generator #####
 
@@ -93,7 +86,6 @@ a.k.a lexical scope based coroutines.
 Keeping the *iter* example:
 
 ```perl6
-
 my $generator = iter 1, 2, 3;
 
 say $generator( ); # >>> 1
@@ -101,7 +93,6 @@ say $generator( ); # >>> 2
 say $generator( ); # >>> 3
 say $generator( ); # >>> False, here, the coroutine is dead.
 # Use "$generator = iter 1, 2, 3;" again if you want...
-
 ```
 
 ##### Coroutine: More complex examples #####
@@ -109,7 +100,6 @@ say $generator( ); # >>> False, here, the coroutine is dead.
 Yep, you can build a *map* / *grep* like coroutines!
 
 ```perl6
-
 # map coroutine
 my &transform = coro -> @xs {
     my &fn = @xs.pop; # the function is included in the last position of the array
@@ -135,8 +125,11 @@ my &filter = coro -> @xs {
 # my $filtered  = filter @array.list, &even;
 #
 # :)
-
 ```
+
+Happy Hacking! :)
+
+Pull requests are welcome.
 
 TODO
 ====
@@ -144,4 +137,4 @@ TODO
 * Insert more examples here (show the code).
 * Document the module with Perl 6's Pods.
 
-End of it.
+End.
