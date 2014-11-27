@@ -13,9 +13,9 @@ plan 9;
 my &transform = coro -> @array {
     my &function = @array.pop;
     for @array -> $x, $y, $z {
-	function ($x) ==> yield;
-	function ($y) ==> yield;
-	function ($z) ==> yield;
+	(function $x) ==> yield;
+	(function $y) ==> yield;
+	(function $z) ==> yield;
     }
 }
 

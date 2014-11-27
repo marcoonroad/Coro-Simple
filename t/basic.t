@@ -39,7 +39,7 @@ my $result = $gen( );
 # loop delaying 0.5 second by cycle
 while $result {
     say $result;
-    ok defined $result;
+    ok $result;
     $result = $gen( );
     sleep 0.5;
 }

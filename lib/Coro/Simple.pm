@@ -24,7 +24,7 @@ sub coro (&block) is export {
     }
 }
 
-# now, this really can yield multiple values :)
+# only can yield one value per cycle...
 sub yield ($value?) is export {
     if defined $value {
         take $value;

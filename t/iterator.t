@@ -10,8 +10,8 @@ use Coro::Simple;
 plan 7;
 
 # iterator example
-my &iter = coro -> @array {
-    for @array -> $x { yield $x }
+my &iter = coro -> @xs {
+    for @xs -> $x { yield $x }
 }
 
 # generator function
