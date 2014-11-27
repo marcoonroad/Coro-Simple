@@ -4,15 +4,14 @@ use v6;
 
 module Coro::Simple;
 
-# receives an arrow block
+# receives a simple block or pointy block
 sub coro (&block) is export {
-    # returns a closure as constructor
+    # returns a lambda as constructor
     return sub (*@args) {
 	my @yields := gather block @args.flat;
-	# my $index   = 0;
-	# so, will returns the generator
-	return -> {
-	    state $index = 0;
+	my $index   = 0;
+	# that will returns the generator
+	return {
 	    my $result;
 	    if defined @yields[ $index++ ] {
 		$result = @yields[ $index - 1 ];
@@ -21,12 +20,11 @@ sub coro (&block) is export {
 		$result = False; # I just don't like null :P
 	    }
 	    $result;
-	};
+	}
     }
 }
 
-# can yields multiple values, e.g. but they need to
-# be an array or hash. called inside an arrow block
+# now, this really can yield multiple values :)
 sub yield ($value?) is export {
     if defined $value {
         take $value;

@@ -2,17 +2,17 @@
 
 use v6;
 
-# a test just for loop
+# a test just for a loop
 
 use Test;
 use Coro::Simple;
 
 plan 4;
 
-# looping example
+# loop example
 my $times = coro -> $max {
     for 1 ... $max {
-	"Hello, World!".say;
+	"Hello, World!" ==> say;
 	yield;
     }
 }

@@ -2,29 +2,46 @@
 
 use v6;
 
-# the first test :)
+# most simple test
 
 use Test;
 use Coro::Simple;
 
 plan 5;
 
-# iterator example
-my &iter = coro -> @array {
-    for @array -> $x { yield $x }
+# coroutine example
+my $coro = coro {
+    my $cnt = 1;
+    say "cnt has: $cnt";
+    yield $cnt;
+
+    $cnt += 1;
+    say "cnt (again) has: $cnt";
+    yield [ $cnt, $cnt ];
+
+    $cnt = "Now I'm a string!";
+    say "Now, cnt is a string? { $cnt ~~ Str }";
+    yield $cnt;
+
+    say "Hi, folks!";
+    say "Hello ", "World!" ;
+    yield; # True implicit
+
+    say "See ya later";
+    yield [ "Bye-bye!".comb ];
 }
 
 # generator function
-my $next = iter 5 ... 1;
+my $gen = $coro( );
 
-my $item;
+my $result = $gen( );
 
-# loop until $item becomes False,
-# delaying 0.5 second by loop
-while $item = $next( ) {
+# loop delaying 0.5 second by cycle
+while $result {
+    say $result;
+    ok defined $result;
+    $result = $gen( );
     sleep 0.5;
-    ok $item;
-    say $item;
 }
 
 # end of test
