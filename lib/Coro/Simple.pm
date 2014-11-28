@@ -27,11 +27,20 @@ sub coro (&block) is export {
 # only can yield one value per cycle...
 sub yield ($value?) is export {
     if defined $value {
-        take $value;
+	take $value;
     }
     else {
 	take True;
     }
+}
+
+# to check if generated value was a yielded one
+sub assert (&blk, $value) is export {
+    # is false?
+    if ($value ~~ Bool) && (!$value) {
+	return blk( );
+    }
+    return $value; # else
 }
 
 # end of module

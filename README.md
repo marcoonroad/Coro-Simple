@@ -127,9 +127,40 @@ my &filter = coro -> @xs {
 # :)
 ```
 
+##### Coroutine: Verifying #####
+
+There's also a function called *assert* in this module. Its main purpose is:
+
+* If given value isn't False, return it.
+* Otherwise, if given value is False, runs given block (other argument).
+
+Let's see a small example:
+
+```perl6
+$some-value = $some-generator( );
+$some-value ==> assert { warn "Sorry, but your coroutine is dead." } ==> say;
+# prints $some-value or generates a warning if is false
+
+$some-value = $some-generator( ); # try to assign again
+assert ({ $some-generator = some-constructor( ) }, $some-value);
+# reassign to the generator if $some-value is False
+```
+
+##### Notes: #####
+
 Happy Hacking! :)
 
 Pull requests are welcome.
+
+Tips and Tricks
+===============
+
+Naturally, you can build a iterator / generator as this (using *sub* instead *->*, *map* instead *for ... { ... }*):
+
+```perl6
+# receives an array and yields each element
+my &iter = coro sub (@xs) { @xs ==> map &yield }
+```
 
 TODO
 ====

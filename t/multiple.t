@@ -10,18 +10,18 @@ use Coro::Simple;
 plan 9;
 
 # map example
-my &transform = coro -> @array {
-    my &function = @array.pop;
-    for @array -> $x, $y, $z {
-	(function $x) ==> yield;
-	(function $y) ==> yield;
-	(function $z) ==> yield;
+my &transform = coro -> $array {
+    my &function = @($array).pop;
+    for @($array) -> $x, $y, $z {
+	function $x;
+	function $y;
+	function $z;
     }
 }
 
 # constructor use
 my &get-next = transform 45 ... 15, -> $x {
-    [ $x, $x + 1, $x ** 2 ] # returning an anonymous list
+    yield [ $x, $x + 1, $x ** 2 ] # will yields an anonymous list
 };
 
 my $items;
