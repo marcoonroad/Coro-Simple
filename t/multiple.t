@@ -10,9 +10,9 @@ use Coro::Simple;
 plan 9;
 
 # map example
-my &transform = coro -> $array {
-    my &function = @($array).pop;
-    for @($array) -> $x, $y, $z {
+my &transform = coro sub (*@array) {
+    my &function = @array.pop;
+    for @array -> $x, $y, $z {
 	function $x;
 	function $y;
 	function $z;
