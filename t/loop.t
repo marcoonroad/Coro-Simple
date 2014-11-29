@@ -10,15 +10,15 @@ use Coro::Simple;
 plan 4;
 
 # loop example
-my $times = coro -> $max {
-    for 1 ... $max {
-	"Hello, World!" ==> say;
-	yield;
-    }
+my &xtimes = coro -> &blk, $range {
+    for @$range -> $i { $i ==> blk }
 }
 
 # generator function
-my $loop = $times(3);
+my $loop = ([ 1 ... 3 ] ==> xtimes -> $x {
+    "Hello, World! (n' $x)...".say;
+    yield; # default yield: True
+});
 
 ok $loop( );
 

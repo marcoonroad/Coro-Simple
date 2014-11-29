@@ -10,7 +10,7 @@ use Coro::Simple;
 plan 5;
 
 # coroutine example
-my $coro = coro {
+my $coro = coro { # zero arity block
     my $cnt = 1;
     say "cnt has: $cnt";
     yield $cnt;
@@ -36,10 +36,10 @@ my $gen = $coro( );
 
 my $result = $gen( );
 
-# loop delaying 0.5 second by cycle
-while $result {
+# loop until $result becomes False
+while ($result !~~ Bool) || (?$result) {
+    ok defined $result;
     say $result;
-    ok $result;
     $result = $gen( );
     sleep 0.5;
 }

@@ -10,7 +10,7 @@ use Coro::Simple;
 plan 4;
 
 # iterator example
-my &iter = coro sub (@xs) { @xs.map: &yield }
+my &iter = coro sub (*@xs) { @xs.map: &yield }
 
 my @array = 1, 2, 3;
 

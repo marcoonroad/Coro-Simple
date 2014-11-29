@@ -8,12 +8,12 @@ module Coro::Simple;
 sub coro (&block) is export {
     # returns a lambda as constructor
     return sub (*@args) {
-	my @yields := gather block @args.flat;
-	my $index   = 0;
+	my @yields := gather block |@args; # flat the params
 	# that will returns the generator
 	return {
+	    state $index = 0; # array "pointer"
 	    my $result;
-	    if defined @yields[ $index++ ] {
+	    if defined @yields[ $index++ ] { # increase 'index' "pointer" to next after
 		$result = @yields[ $index - 1 ];
 	    }
 	    else {
@@ -24,7 +24,7 @@ sub coro (&block) is export {
     }
 }
 
-# only can yield one value per cycle...
+# only can yield only one value per cycle...
 sub yield ($value?) is export {
     if defined $value {
 	take $value;
@@ -41,6 +41,19 @@ sub assert (&blk, $value) is export {
 	return blk( );
     }
     return $value; # else
+}
+
+# receives a generator and returns a lazy list
+sub from (&gen) is export {
+    my $temp = gen;
+    my @lazy := gather {
+	# return more a value until it becomes False
+	while ($temp !~~ Bool) || (?$temp) {
+	    take $temp;
+	    $temp = gen;
+	}
+    }
+    return @lazy; # you must bind it to an array when calling the 'from' function
 }
 
 # end of module

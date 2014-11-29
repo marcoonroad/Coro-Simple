@@ -7,26 +7,24 @@ use v6;
 use Test;
 use Coro::Simple;
 
-plan 7;
+plan 6;
 
 # iterator example
-my &iter = coro -> @xs {
-    for @xs -> $x { yield $x }
-}
+my &iter = coro { @$^xs.map: &yield }
 
 # generator function
-my $next = iter 3 ... -2;
+my $next = iter [ 3 ... -2 ];
 
+# generates a value
 my $item = $next( );
-ok defined $item;
 
 # loop until $item becomes a Bool
 # value, delaying 0.5 second by cycle
-while $item ~~ Int {
-    sleep 0.5;
+while $item !~~ Bool {
+    ok defined $item;
     say $item;
     $item = $next( );
-    ok defined $item;
+    sleep 0.5;
 }
 
 # end of test

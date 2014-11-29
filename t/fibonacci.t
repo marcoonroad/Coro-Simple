@@ -9,13 +9,15 @@ use Coro::Simple;
 
 plan 15;
 
+# TODO: fix the 'coro' to accept streams
+
 # lazy iterator example
-my &each = coro -> @xs {
-    for @xs -> $x { yield $x }
+my &fib-gen = coro {
+    (^2, * + * ... *).map: &yield; # lazy fibonacci sequence
 }
 
 # generator function
-my &get = each 0, 1, * + * ... *; # lazy fibonacci sequence
+my $get = fib-gen;
 
 my $result;
 
@@ -23,7 +25,7 @@ my $result;
 # numbers from fibonacci sequence
 # (per 1/2 sec of delay, each)
 for ^15 {
-    $result = get;
+    $result = $get( );
     ok defined $result;
     say $result;
     sleep 0.5;
