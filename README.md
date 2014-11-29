@@ -95,7 +95,7 @@ now we will see generators.
 
 Note: here, the generator definition is just for a function that returns the next value (every time that it is called).
 Not a "stackless" assymetric coroutine (that cares about if you will call *yield* out of their block / lexical scope),
-a.k.a lexical scope based coroutines.
+a.k.a lexical scope based coroutines / semi-coroutines.
 
 Keeping the *iter* example:
 
