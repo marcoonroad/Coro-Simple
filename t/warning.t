@@ -17,9 +17,9 @@ my @array = 1, 2, 3;
 # generator function
 my $next = iter @array;
 
-ok (assert({ warn "Sorry, but the coroutine is dead..." }, $next).say);
-ok (assert({ warn "Sorry, but the coroutine is dead..." }, $next).say);
-ok (assert({ warn "Sorry, but the coroutine is dead..." }, $next).say);
-ok (assert({ warn "Sorry, but the coroutine is dead..." }, $next).say);
+ok (assert({ warn "Sorry, but the coroutine is dead..." }, $next( )).say);
+ok (assert({ warn "Sorry, but the coroutine is dead..." }, $next( )).say);
+ok (assert({ warn "Sorry, but the coroutine is dead..." }, $next( )).say);
+ok (assert({ warn "Sorry, but the coroutine is dead..." }, $next( )).say);
 
 # end of test

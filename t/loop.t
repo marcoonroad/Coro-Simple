@@ -11,14 +11,14 @@ plan 4;
 
 # loop example
 my &xtimes = coro -> &blk, $range {
-    for @$range -> $i { $i ==> blk }
+    for @$range -> $i { blk($i) }
 }
 
 # generator function
-my $loop = ([ 1 ... 3 ] ==> xtimes -> $x {
+my $loop = (xtimes -> $x {
     "Hello, World! (n' $x)...".say;
     yield; # default yield: True
-});
+}, [ 1 ... 3 ]);
 
 ok $loop( );
 
