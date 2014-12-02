@@ -11,7 +11,6 @@ plan 9;
 
 # map-like example
 my &transform = coro -> &fn, $xs {
-    # my &function = @array.pop;
     for @$xs -> $x, $y, $z {
 	fn $x;
 	fn $y;

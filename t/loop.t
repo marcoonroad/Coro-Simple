@@ -29,6 +29,6 @@ sleep 0.5;
 ok $loop( );
 
 sleep 0.5;
-ok not $loop( ); # here, the coroutine is dead
+nok $loop( ); # here, the coroutine is dead
 
 # end of test

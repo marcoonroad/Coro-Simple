@@ -56,4 +56,11 @@ sub from (&gen) is export {
     return @lazy; # you must bind it to an array when calling the 'from' function
 }
 
+# experimental function: may change in the future
+# suspend the current coroutine and resume other
+# currently it just return the address of next coroutine
+sub transfer (&coro) is export {
+    return yield &coro;
+}
+
 # end of module

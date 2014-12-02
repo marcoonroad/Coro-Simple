@@ -3,9 +3,12 @@ Coro-Simple
 
 Simple coroutines for Perl 6, inspired on Lua's *coroutine.wrap* / *coroutine.yield* functions.
 
-This is a module for asymmetric coroutines, a.k.a coroutines that suspend their flows
+This is a module for **(full) asymmetric coroutines**, a.k.a coroutines that suspend their flows
 with *yield*, but not (instead) change the control flow to another coroutine with *transfer* (these
-are symmetric ones).
+are **symmetric** ones).
+
+If you want to know more about coroutines, I suggest you to read this paper:
+http://www.inf.puc-rio.br/~roberto/docs/MCC15-04.pdf ...
 
 
 
@@ -14,27 +17,27 @@ are symmetric ones).
 ### Features and Issues ###
 
 The *coro* / *yield* functions from this module are implemented using the *gather* / *take* functions.
-The *gather* / *take* have some interesting features:
+The *gather* / *take* has some interesting features:
 
-* Dynamic-scope based: it don't care about how many calls down are to find a *take*.
-* Lists generator: useful for list comprehension.
-* Lazy: delay the evaluation until you really need it.
+* **It has a dynamic scope:** it don't care about how many calls down are to find a *take*.
+* **It's a list generator:** useful for list-comprehension-like stuff.
+* **It's also is lazy:** delay the evaluation until you really need it.
 
 
-Based on this, the *coro* / *yield* also have some features:
+Based on the stuff above, the *coro* / *yield* itself also has some features:
 
-* The coroutine don't care about how many calls down are to find a *yield*, even inside many other functions.
-* Only generates one value per cycle, but you can yield an anonymous array to avoid it.
+* The coroutine don't care about how many calls down are to find a *yield*, even inside many other nested functions.
+* The *yield* only generates one value per cycle, but you can yield an anonymous array to avoid it.
 * You can pass a stream to a coroutine as argument (but currently this feature still isn't supported).
 
 
 But, there are some issues, too:
 
-* I advise you to not use *gather* / *take* inside a coroutine, even I don't know what will happen.
-* It don't generates the last values with *return*, only with *yield*.
+* I advise you to not use *gather* / *take* inside any coroutine, even I don't know what will happen.
+* It don't generates the last values with *return* (as is the case of Lua), only with *yield*.
 
 
-You can yield, too, nothing (just for a temporary change of control flow). Don't worry about,
+You can yield, too, **nothing** (no one argument, just for a temporary change of control flow). Don't worry about,
 it will takes (internally) the True value.
 
 
@@ -62,19 +65,19 @@ coro -> $param1, $param2, $param3 { ... }; # 3-arity coroutine
 Or even with:
 
 ```perl6
-coro -> $params { for @$params -> $param { ... } }; # variadic arguments
+coro -> $params { for @$params -> $param { ... } }; # variadic arguments through a anonymous list
 ```
 
 
 ##### Coroutine: Constructor #####
 
-After, the *coro* keyword returns a constructor, and you may think "but why it returns a constructor"?
+After, the *coro* keyword returns a constructor, and you may think **"but why it returns a constructor?"**...
 Well, for two mainly reasons:
 
-* Code reuse: you can use the coroutine on different places, without declare again it every time.
-* Reset / restore to initial state: when the coroutine dies, you can just assign it again to the generator.
+* **For code reuse:** you can use the coroutine on different places, without declare again it every time.
+* **Reset to a initial state:** when the coroutine dies, you can just reassign it to the generator.
 
-Some example (a Python-like iter function):
+Some example (a Python-like *iter* function):
 
 ```perl6
 my &iter = coro -> $xs {
@@ -84,7 +87,7 @@ my &iter = coro -> $xs {
 }
 ```
 
-The *iter* function above will receives an anonymous array and returns a generator function... Well remembered,
+The *iter* function above will receives an anonymous array and returns a **generator** function... Well remembered,
 now we will see generators.
 
 
@@ -94,8 +97,8 @@ now we will see generators.
 ##### Coroutine: Generator #####
 
 Note: here, the generator definition is just for a function that returns the next value (every time that it's called).
-Not as is usually a "stack-less" asymmetric coroutine (that cares about if you will call *yield* out of their block / lexical scope),
-a.k.a lexical scope based coroutines / semi-coroutines.
+Not as is usually called a **"stack-less" asymmetric coroutine** (that cares about if you will call *yield* out of their block
+/ lexical scope).
 
 Keeping the *iter* example:
 
@@ -173,10 +176,12 @@ Or, too:
 my @lazy-array := from &some-generator;
 ```
 
-You can build more complex stuff with it too, without evaluate the whole thing at all (because *map* and *grep* are lazy too :) ...):
+You can build more complex things with it too, without evaluate the whole thing at all (because *map* and *grep* are
+lazy too :) ...):
 
 ```perl6
 my @lazy-array-1 := (from some-constructor($arg1, $arg2, ...)).map: * + 1;
+
 my @lazy-array-2 := (from (coro { ... })(...)).grep: * %% 2;
 ```
 
@@ -191,16 +196,25 @@ There's also a function called *assert* in this module. Its main purpose is:
 * If given value isn't False, return it.
 * Otherwise, if given value is False, runs given block (other argument).
 
-Let's see a small example:
+Let's see a small example below:
 
 ```perl6
 $some-value = $some-generator( );
+
 ($some-value ==> assert { warn "Sorry, but your coroutine is dead." }) ==> say;
 # prints $some-value or generates a warning if is false
 
 $some-value = assert ({ $some-generator = some-constructor( ) }, $some-generator( ));
-# reassign to the generator if $some-generator returns False or returns a value to $some-value
+# reassign to the generator if $some-generator returns False or returns a value
 ```
+
+
+
+
+
+##### Coroutine: Implementing symmetric ones #####
+
+The support to a *transfer* function is still experimental. Check the 't/transfer.t' test if you wish.
 
 
 
@@ -209,7 +223,7 @@ $some-value = assert ({ $some-generator = some-constructor( ) }, $some-generator
 
 ##### Notes: #####
 
-Happy Hacking! :)
+**Happy Hacking!** :)
 
 Pull requests are welcome.
 
@@ -221,14 +235,15 @@ Pull requests are welcome.
 Tips and Tricks
 ===============
 
-Naturally, you can build a iterator / generator as this:
+Naturally, you can build a *enumerator / generator* as this:
 
 ```perl6
-# receives many arguments (e.g flattened array) and yields each element
+# receives many arguments (e.g flattened array) and yields each one
 my &iter = coro sub (*@xs) { @xs ==> map &yield }
 ```
 
 And some short version:
+
 ```perl6
 my &iter = coro { @$^xs.map: &yield }
 ```
@@ -242,8 +257,8 @@ TODO
 ====
 
 * Insert more examples here (show the code).
-* Document the module with Perl 6's Pods.
-* Fix the module to accepts streams (infinite lists).
+* Document the module with **Perl 6's Pods**.
+* Fix the module for the *coro* accepts streams (infinite lists) as arguments.
 
 
 
