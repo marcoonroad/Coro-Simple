@@ -7,10 +7,10 @@ module Coro::Simple;
 # receives a simple block or pointy block
 sub coro (&block) is export {
     # returns a lambda as constructor
-    return sub (*@args) {
-	my @yields := gather block |@args; # flat the params
+    return sub (*@params) {
+	my @yields := gather block |@params; # flat the arguments
 	# that will returns the generator
-	return {
+	return sub {
 	    state $index = 0; # array "pointer"
 	    my $result;
 	    if defined @yields[ $index++ ] { # increase 'index' "pointer" to next after
@@ -34,33 +34,28 @@ sub yield ($value?) is export {
     }
 }
 
-# to check if generated value was a yielded one
-sub assert (&blk, $value) is export {
-    # is false?
+# to check if generated value was a yielded one (instead just False)
+sub assert (&block, $value) is export {
+    # is False?
     if ($value ~~ Bool) && (!$value) {
-	return blk( );
+	return block;
     }
     return $value; # else
 }
 
 # receives a generator and returns a lazy list
-sub from (&gen) is export {
-    my $temp = gen;
+sub from (&generator) is export {
+    my $temp = generator;
+    # eval-by-need trick
     my @lazy := gather {
-	# return more a value until it becomes False
+	# request more a value until it becomes False
 	while ($temp !~~ Bool) || (?$temp) {
 	    take $temp;
-	    $temp = gen;
+	    $temp = generator;
 	}
     }
-    return @lazy; # you must bind it to an array when calling the 'from' function
-}
-
-# experimental function: may change in the future
-# suspend the current coroutine and resume other
-# currently it just return the address of next coroutine
-sub transfer (&coro) is export {
-    return yield &coro;
+    # you can bind it to an array when calling the 'from' function
+    return @lazy;
 }
 
 # end of module
