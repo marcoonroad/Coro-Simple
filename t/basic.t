@@ -15,7 +15,7 @@ my $coro = coro { # zero arity block
     say "cnt has: $cnt";
     yield $cnt;
 
-    $cnt += 1;
+    $cnt += 1; # mutable variable
     say "cnt (again) has: $cnt";
     yield [ $cnt, $cnt ];
 

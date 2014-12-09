@@ -2,7 +2,7 @@
 
 use v6;
 
-# the first test :)
+# a range generator test
 
 use Test;
 use Coro::Simple;
@@ -11,12 +11,15 @@ plan 5;
 
 # range coroutine
 my &xrange = coro -> $min, $max, $step {
-    ($min, $min + $step, $min + ($step * 2) ...^ $max).map: &yield;
+    for $min, $min + $step ...^ $max -> $num {
+	yield $num;
+    }
 }
 
 # generator function
-my $next = xrange (20, 25, 1);
+my $next = xrange (20, 30, 2);
 
+# first result
 my $value = $next( );
 
 # loop until $item becomes a Bool

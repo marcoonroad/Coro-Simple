@@ -4,33 +4,34 @@ use v6;
 
 module Coro::Simple;
 
-# receives a simple block or pointy block
+# receives a simple block / pointy block
 sub coro (&block) is export {
-    # returns a lambda as constructor
+    # returns a closure as constructor
     return sub (*@params) {
-	my @yields := gather block |@params; # flat the arguments
-	# that will returns the generator
-	return sub {
-	    state $index = 0; # array "pointer"
-	    my $result;
-	    if defined @yields[ $index++ ] { # increase 'index' "pointer" to next after
-		$result = @yields[ $index - 1 ];
-	    }
-	    else {
-		$result = False; # I just don't like null :P
-	    }
-	    $result;
-	}
+        my @yields := gather block |@params; # flat the arguments
+        my $index   = 0; # array "pointer"
+        # that will returns the generator
+        return sub ( ) {
+            my $result;
+            # increase 'index' "pointer" to next, after
+            if defined @yields[ $index++ ] {
+                $result = @yields[ $index - 1 ];
+            }
+            else {
+                $result = False; # I just don't like null :P
+            }
+            return $result;
+        }
     }
 }
 
-# only can yield only one value per cycle...
+# only can yield one value per cycle...
 sub yield ($value?) is export {
     if defined $value {
-	take $value;
+        take $value;
     }
     else {
-	take True;
+        take True;
     }
 }
 
@@ -48,11 +49,11 @@ sub from (&generator) is export {
     my $temp = generator;
     # eval-by-need trick
     my @lazy := gather {
-	# request more a value until it becomes False
-	while ($temp !~~ Bool) || (?$temp) {
-	    take $temp;
-	    $temp = generator;
-	}
+        # request more a value until it becomes False
+        while ($temp !~~ Bool) || (?$temp) {
+            take $temp;
+            $temp = generator;
+        }
     }
     # you can bind it to an array when calling the 'from' function
     return @lazy;

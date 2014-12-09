@@ -12,8 +12,8 @@ plan 3;
 # iterator example
 my &iter = coro -> $xs {
     for @$xs -> $x {
-	say "Yay! You get $x."; # just a action to check the "eval by need"...
-	yield $x;
+        say "Yay! You get $x."; # just a action to check the "eval by need"...
+        yield $x;
     }
 }
 

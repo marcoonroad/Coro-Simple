@@ -7,14 +7,14 @@ This is a module for **(full) asymmetric coroutines**, coroutines that suspend t
 with *yield* instead change the control flow to another coroutine with *transfer* (these
 are called **symmetric** ones).
 
-If you want to know more about coroutines, I suggest you to read this paper:
+If you want to know more about coroutines, I suggest you to read this nice paper:
 http://www.inf.puc-rio.br/~roberto/docs/MCC15-04.pdf ...
 
 
 
 
 
-### Features and Issues ###
+### ~> Features and Issues ###
 
 The *coro* / *yield* functions from this module are implemented using the *gather* / *take* built-in
 P6's functions. The *gather* / *take* has some interesting features:
@@ -27,7 +27,7 @@ P6's functions. The *gather* / *take* has some interesting features:
 Based on the stuff above, the *coro* / *yield* itself also has some features:
 
 * The coroutine don't care about how many calls down are to find a *yield*, even inside many other nested functions.
-* The *yield* only generates one value per cycle, but you can yield an anonymous array to avoid it.
+* The *yield* only generates one value per cycle, but you can yield an anonymous list to avoid it.
 * You can pass a stream to a coroutine as argument (but currently this feature still isn't supported).
 
 
@@ -44,7 +44,7 @@ it will takes internally the True value.
 
 
 
-### Examples ###
+### ~> Description ###
 
 ##### Coroutine: Declaration #####
 
@@ -82,6 +82,21 @@ Well, for two mainly reasons:
 * **For code reuse:** you can use the coroutine on different places, without declare / return again it every time.
 * **Reset to a initial state:** when the coroutine dies, you can just reassign it to the generator.
 
+On Lua, if you want to reuse a coroutine, you need explicitly to return a coroutine that will reuse the given
+arguments (closure-like-stuff)...
+
+```lua
+function iter (xs)
+    return coroutine.wrap (function ( )
+	for _, x in ipairs (xs) do
+	    coroutine.yield (x)
+	end
+    end)
+end
+```
+
+So, I decided implement a different approach...
+
 Some example (a Python-like *iter* function):
 
 ```perl6
@@ -102,10 +117,10 @@ now we will see generators.
 ##### Coroutine: Generator #####
 
 Note: here, the generator definition is just for a function that returns the next value (every time that it's called),
-not as is usually called a **"stack-less" asymmetric coroutine** (that cares about if you will call *yield* out of
+not as is usually called a **asymmetric coroutine of "unseparated stacks"** (that cares about if you will call *yield* out of
 their block / lexical scope).
 
-Keeping the *iter* example:
+Reusing the *iter* example:
 
 ```perl6
 my $generator = iter [ 1, 2, 3 ];
@@ -217,7 +232,7 @@ $some-value = assert ({ $some-generator = some-constructor( ) }, $some-generator
 
 
 
-##### Coroutine: Implementing symmetric ones #####
+##### Coroutine: Implementing symmetric coroutines #####
 
 The support to a *transfer* function is still experimental. Check the 't/transfer.t' test if you wish to know more about.
 

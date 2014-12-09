@@ -11,13 +11,14 @@ plan 15;
 
 # TODO: fix the 'coro' to accept streams
 
-# lazy iterator example
-my &gen-fib = coro {
-    (^2, * + * ... *).map: &yield;
+# lazy fibonacci sequence generator
+my &fibonacci = coro {
+    my @xs := ^2, * + * ... *;
+    yield $_ for @xs;
 }
 
 # generator function
-my $get = gen-fib;
+my $get = fibonacci;
 
 my $result;
 

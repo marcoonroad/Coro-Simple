@@ -13,30 +13,49 @@ sub transfer (&generator) {
     yield &generator; # 'transfer' is just a alias for 'yield'
 }
 
-my $ping;
-my $pong;
+# impure 'begin' function
+# sub begin (&generator) {
+#    my $transferred = generator;
+#    $transferred = $transferred( ) while $transferred;
+# }
+
+# pure 'begin' function
+multi begin (( )) { } # work around ? ...
+multi begin (&generator) { begin generator( ) }
+
+my $first;
+my $second;
+my $third;
 
 my &ping = coro -> $msg {
     for ^3 -> $i {
-	say [ $msg, $i ];
-	sleep 0.5;
-	ok transfer $pong;
+	ok say "$msg -> $i";
+	transfer $second;
     }
-};
+}
+
+my &wtf = coro {
+    for ^3 {
+	say "\n" ~ "WTF?" ~ "\n\n";
+	transfer $third;
+    }
+}
 
 my &pong = coro -> $msg {
     for ^3 -> $i {
-	say [ $msg, $i ];
-	sleep 0.5;
-	ok transfer $ping;
+	ok say "$msg -> $i";
+	transfer $first;
     }
-};
+}
 
-$ping = ping "Ping!";
-$pong = pong "Pong!";
+$first  = ping "Ping!";
+$second = wtf;
+$third  = pong "Pong!";
+
+begin $first; # begin the cycle with this generator
 
 # a small / useful scheduler-like chunk
-(from $ping).map(&from).map: { &^generator( ) };
+# (from $ping).map(&from).map: { &^generator( ) };
 
 # for from $ping -> $coro {
 #     for from $coro -> $next {

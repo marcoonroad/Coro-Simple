@@ -12,9 +12,9 @@ plan 9;
 # map-like example
 my &transform = coro -> &fn, $xs {
     for @$xs -> $x, $y, $z {
-	fn $x;
-	fn $y;
-	fn $z;
+        fn $x;
+        fn $y;
+        fn $z;
     }
 }
 
