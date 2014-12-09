@@ -14,7 +14,7 @@ http://www.inf.puc-rio.br/~roberto/docs/MCC15-04.pdf ...
 
 
 
-### ~> Features and Issues ###
+### Features and Issues ###
 
 The *coro* / *yield* functions from this module are implemented using the *gather* / *take* built-in
 P6's functions. The *gather* / *take* has some interesting features:
@@ -23,6 +23,13 @@ P6's functions. The *gather* / *take* has some interesting features:
 * **It's a list generator:** useful for list-comprehension-like stuff.
 * **It also is lazy:** delay the evaluation until you really need it.
 
+Some p6 programmers says that the gather / take itself is like a coroutine. In fact, the *gather* / *take*
+fits well in the definitions of Marlin’s doctoral thesis:
+
+> the values of data local to a coroutine persist between successive calls;
+
+> the execution of a coroutine is suspended as control leaves it, only to carry on where it left oﬀ
+> when control re-enters the coroutine at some later stage.
 
 Based on the stuff above, the *coro* / *yield* itself also has some features:
 
@@ -44,7 +51,7 @@ it will takes internally the True value.
 
 
 
-### ~> Description ###
+### Description ###
 
 ##### Coroutine: Declaration #####
 
@@ -67,7 +74,7 @@ Or even with:
 ```perl6
 coro -> $params {
     for @$params -> $param {
-	...
+	do-some-stuff-with $param;
     }
 }
 # variadic arguments through a anonymous list
@@ -241,7 +248,7 @@ The support to a *transfer* function is still experimental. Check the 't/transfe
 
 
 
-##### Notes: #####
+##### Notes #####
 
 Pull requests are welcome.
 
@@ -251,10 +258,9 @@ Pull requests are welcome.
 
 
 
-Tips and Tricks
-===============
+### Tips and Tricks ###
 
-Naturally, you can build a *enumerator / generator* as this:
+Naturally, you can build a *enumerator / generator* as this (because *gather* / *take* has a dynamic scope):
 
 ```perl6
 # receives many arguments (e.g flattened array) and yields each one
@@ -272,8 +278,7 @@ my &iter = coro { @$^xs.map: &yield }
 
 
 
-TODO
-====
+### TODO ###
 
 * Insert more examples here (show the code).
 * Document the module with **Perl 6's Pods**.
@@ -284,4 +289,4 @@ TODO
 
 
 
-End.
+End of Document.
