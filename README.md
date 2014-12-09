@@ -23,8 +23,8 @@ P6's functions. The *gather* / *take* has some interesting features:
 * **It's a list generator:** useful for list-comprehension-like stuff.
 * **It also is lazy:** delay the evaluation until you really need it.
 
-Some p6 programmers says that the *gather* / *take* itself is like a coroutine. In fact, the **lazy property** of gather / take
-fits well in the definitions of Marlin’s doctoral thesis:
+Some p6 programmers says that the *gather* / *take* itself is like a coroutine. In fact, the **lazy property** of
+gather / take does it fits well in the definitions of Marlin’s doctoral thesis:
 
 > the values of data local to a coroutine persist between successive calls;
 
