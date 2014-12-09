@@ -37,11 +37,11 @@ my $get = pure-gen 10;
 my $result;
 
 # impure block in loop
-[ 1, 10 ] ==> clock -> $i {
+clock -> $i {
     $result = $get( ); # impure, mutable variable
     ok defined $result;
     say [ $i, $result ];
     sleep 0.5;
-}
+}, [ 1, 10 ];
 
 # end of test
