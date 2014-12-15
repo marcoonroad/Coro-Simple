@@ -61,19 +61,19 @@ So, let's go see some examples.
 
 First, you declares a coroutine with:
 
-```perl6
+```perl
 coro { ... }; # zero-arity coroutine
 ```
 
 Or with:
 
-```perl6
+```perl
 coro -> $param1, $param2, $param3 { ... }; # 3-arity coroutine
 ```
 
 Or even with:
 
-```perl6
+```perl
 coro -> $params {
     for @$params -> $param { do-some-thing-with $param }
 }
@@ -106,7 +106,7 @@ So, I decided implement a different approach...
 
 Some example (a Python-like *iter* function):
 
-```perl6
+```perl
 my &iter = coro -> $xs {
     for @$xs -> $x { yield $x }
 }
@@ -127,7 +127,7 @@ their block / lexical scope).
 
 Reusing the *iter* example:
 
-```perl6
+```perl
 my $generator = iter [ 1, 2, 3 ];
 
 say $generator( ); # >>> 1
@@ -145,7 +145,7 @@ say $generator( ); # >>> False, here, the coroutine is dead.
 
 Yep, you can build a *map* / *grep* / *range* like coroutines / generators!
 
-```perl6
+```perl
 # map coroutine
 my &transform = coro -> &fn, $xs {
     for @$xs -> $x { yield fn($x) }
@@ -189,20 +189,20 @@ generator, it takes a reference to a generator and returns a lazy array to bind.
 
 Some examples:
 
-```perl6
+```perl
 my @lazy-array := from $some-generator;
 ```
 
 Or, too:
 
-```perl6
+```perl
 my @lazy-array := from &some-generator;
 ```
 
 You can build more complex things with it too, without evaluate the whole thing at all (because *map* and *grep* are
 lazy too :) ...):
 
-```perl6
+```perl
 my @lazy-array-1 := (from some-constructor($arg1, $arg2, ...)).map: * + 1;
 
 my @lazy-array-2 := (from (coro { ... })(...)).grep: * %% 2;
@@ -221,7 +221,7 @@ There's also a function called *assert* in this module. Its main purpose is to c
 
 Let's see a small example below:
 
-```perl6
+```perl
 $some-value = $some-generator( );
 
 ($some-value ==> assert { warn "Sorry, but your coroutine is dead." }) ==> say;
@@ -259,14 +259,14 @@ Pull requests are welcome.
 
 Naturally, you can build a *enumerator / generator* as this (because *gather* / *take* has a dynamic scope):
 
-```perl6
+```perl
 # receives many arguments (e.g flattened array) and yields each one
 my &iter = coro sub (*@xs) { @xs ==> map &yield }
 ```
 
 And some short version (that receives a anonymous list):
 
-```perl6
+```perl
 my &iter = coro { @$^xs.map: &yield }
 ```
 
