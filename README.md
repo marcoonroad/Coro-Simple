@@ -46,8 +46,8 @@ But, there are some issues, too:
 * It don't generates the last values with *return* (as is the case of Lua), so you must use *yield* again.
 
 
-You can also call *yield* with **nothing** (no one argument, just for a temporary change of control flow). Don't worry about,
-it will takes internally the True value.
+You can also yield "nothing" using the *suspend* function (just for a temporary change of control flow).
+Don't worry about, it will takes internally the True value (as a status for coroutine that is alive).
 
 
 
