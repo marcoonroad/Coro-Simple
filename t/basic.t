@@ -25,11 +25,11 @@ my $coro = coro { # zero arity block
 
     say "Hi, folks!";
     say "Hello ", "World!" ;
-    yield; # True implicit
+    suspend; # True implicit
 
     say "See ya later";
     yield [ "Bye-bye!".comb ];
-}
+};
 
 # generator function
 my $gen = $coro( );

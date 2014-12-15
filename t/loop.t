@@ -19,7 +19,7 @@ my &xtimes = coro -> &block, $init, $final, $step {
 # generator function
 my $loop = (xtimes -> $x {
     say "Hello, World! -> { $x }";
-    yield; # default yield: True
+    suspend; # default yield: True
 }, 1, 3, 1);
 
 ok $loop( );

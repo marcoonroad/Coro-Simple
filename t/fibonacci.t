@@ -15,7 +15,7 @@ plan 15;
 my &fibonacci = coro {
     my @xs := ^2, * + * ... *;
     yield $_ for @xs;
-}
+};
 
 # generator function
 my $get = fibonacci;

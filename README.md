@@ -75,9 +75,7 @@ Or even with:
 
 ```perl6
 coro -> $params {
-    for @$params -> $param {
-	do-some-stuff-with $param;
-    }
+    for @$params -> $param { do-some-thing-with $param }
 }
 # variadic arguments through a anonymous list
 ```
@@ -96,11 +94,11 @@ arguments (closure-like-stuff)...
 
 ```lua
 function iter (xs)
-    return coroutine.wrap (function ( )
-	for _, x in ipairs (xs) do
-	    coroutine.yield (x)
-	end
-    end)
+  return coroutine.wrap (function ( )
+    for _, x in ipairs (xs) do
+      coroutine.yield (x)
+    end
+  end)
 end
 ```
 
@@ -110,9 +108,7 @@ Some example (a Python-like *iter* function):
 
 ```perl6
 my &iter = coro -> $xs {
-    for @$xs -> $x {
-        yield $x;
-    }
+    for @$xs -> $x { yield $x }
 }
 ```
 
@@ -152,9 +148,7 @@ Yep, you can build a *map* / *grep* / *range* like coroutines / generators!
 ```perl6
 # map coroutine
 my &transform = coro -> &fn, $xs {
-    for @$xs -> $x {
-        yield fn($x);
-    }
+    for @$xs -> $x { yield fn($x) }
 }
 
 # grep coroutine
@@ -244,6 +238,7 @@ $some-value = assert ({ $some-generator = some-constructor( ) }, $some-generator
 ##### Coroutine: Implementing symmetric coroutines #####
 
 The support to a *transfer* function is still experimental. Check the 't/transfer.t' test if you wish to know more about.
+There's also a test about tasks...
 
 
 

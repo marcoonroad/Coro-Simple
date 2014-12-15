@@ -10,11 +10,17 @@ use Coro::Simple;
 plan 6;
 
 # iterator example
-my &iter = coro { @$^xs.map: &yield }
+my &iter = coro sub (*@xs) {
+    for @xs -> $x {
+	say "Yielding $x...\n";
+	yield $x;
+    }
+};
 
-my @values := from iter [ 3 ... -2 ];
-
-ok $_.say for @values;
+for from iter 3 ... -2 -> $x {
+    ok say $x;
+    sleep 0.5;
+}
 
 
 # end of test
