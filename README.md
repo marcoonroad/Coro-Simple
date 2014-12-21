@@ -91,7 +91,7 @@ coro -> @params {
 
 ##### Coroutine: Constructor #####
 
-Soon after, the **coro** keyword returns a constructor, and you may think *"but why it returns a
+Soon after, the **coro** keyword gives back a constructor, and you may think *"but why it returns a
 constructor?"*... Well, for two mainly reasons:
 
 * *For code reuse:* you can use the coroutine on different places, without declare / return
@@ -122,14 +122,14 @@ my &iter = coro -> $xs {
 }
 ```
 
-The **iter** function above will receives an anonymous list and returns a *generator*
+The **iter** function above will receive an anonymous list and give back a *generator*
 function... Well-minded, now we will see generators.
 
 
 
 ##### Coroutine: Generator #####
 
-Note: here, the generator definition is just for a function that returns the next value (every
+Note: here, the generator definition is just for a function that return the next value (every
 time that it's called), not as is usually called a *asymmetric coroutine without dedicated
 stacks* (that cares about if you will call **yield** out of their block / lexical scope).
 
@@ -200,7 +200,7 @@ my @lazy-array := from $some-generator;
 Or, too:
 
 ```perl
-my @lazy-array := from &some-generator;
+my @lazy-array := from some-constructor ($x, $y, $z);
 ```
 
 You can build more complex things with it too, without evaluate the whole thing at all
@@ -216,8 +216,9 @@ my @lazy-array-2 := (from (coro { ... })(...)).grep: * %% 2;
 
 ##### Coroutine: Verifying #####
 
-There's also a function called **ensure** in this module. Its main purpose is to check a value,
-so:
+There's also a function called **ensure** in this module (the other function, called 'assert',
+now is deprecated. 'ensure' is the new name for this functionality). Its main purpose is to check a
+value, so:
 
 * If given value isn't False, return it.
 * Otherwise, runs given block (other argument).
@@ -227,7 +228,9 @@ Let's see a small example below:
 ```perl
 $some-value = $some-generator( );
 
-($some-value ==> ensure { warn "Sorry, but your coroutine is dead." }) ==> say;
+($some-value ==> ensure {
+    warn "Sorry, but your coroutine is dead."
+}) ==> say;
 # prints $some-value or generates a warning if is false
 
 $some-value = ensure ({ $some-generator = some-constructor( ) }, $some-generator( ));
