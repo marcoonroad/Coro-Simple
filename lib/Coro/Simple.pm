@@ -6,10 +6,10 @@ module Coro::Simple;
 
 # receives a simple block / pointy block
 sub coro (&block) is export {
-    # returns a closure as constructor
-    return sub (*@params) { # receives many parameters
-	# bind &block at @yields for further lookups
-        my @yields := gather block |@params; # flat the arguments
+    # returns a closure as constructor that receives many arguments
+    return sub (*@params) {
+        # bind &block at @yields for further lookups and flat the arguments
+        my @yields := gather block |@params;
         my $index   = 0; # array "pointer"
         # that will returns another closure as generator
         return sub ( ) {
@@ -34,13 +34,20 @@ sub yield ($value) is export { take $value }
 # an alias for { take True }.
 sub suspend( ) is export { take True }
 
-# to check if generated value was a yielded one (instead just False)
-sub assert (&block, $value) is export {
+# to check if generated value was "yielded" (instead just False)
+sub ensure (&block, $value) is export {
     # is False?
     if ($value ~~ Bool) && (!$value) {
-	return block; # so, executes the &block
+        return block; # so, executes the &block
     }
     return $value; # otherwise
+}
+
+# deprecated function
+sub assert (&block, $value) is export {
+    warn "[ Deprecated function ]\n" ~
+        "This function will be removed in a future version. Please use 'ensure' instead.";
+    return ensure &block, $value;
 }
 
 # receives a generator and returns a lazy array
