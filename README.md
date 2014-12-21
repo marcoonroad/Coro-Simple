@@ -19,14 +19,14 @@ the **gather** / **take** built-in P6's functions, which has some
 interesting features:
 
 * *It has a dynamic scope:* it don't care about how many calls down are
-to find a *take*.
+to find a **take**.
 
 * *Is a list generator:* useful for processing lists with filters and transformers.
 
 * *And also lazy:* delay the evaluation until you really need the result.
 
 Some p6 programmers argue that the **gather** / **take** itself is like a
-coroutine. In fact, the *lazy property* of gather / take does it fits well
+coroutine. In fact, the *lazy property* of **gather** / **take** does it fits well
 in the definitions of Marlin’s doctoral thesis:
 
 > the values of data local to a coroutine persist between successive calls;
@@ -37,7 +37,7 @@ And:
 > to carry on where it left oﬀ when control re-enters the coroutine at
 > some later stage.
 
-Based on the brief discussion above, the **coro** / *yield* also has some
+Based on the brief discussion above, the **coro** / **yield** also has some
 features:
 
 * The coroutine don't care about how many calls down are to find a **yield**,
@@ -56,7 +56,7 @@ so you must use **yield** again.
 
 You can also yield "nothing" using the **suspend** function (and with none
 argument, just for a temporary change of control flow). Don't worry about,
-it will return internally the 'True' value (as a status for coroutine that
+it will return internally the **True** value (as a status for coroutine that
 is alive).
 
 
@@ -91,9 +91,8 @@ coro -> @params {
 
 ##### Coroutine: Constructor #####
 
-After, the **coro** keyword returns a constructor, and you may think *"but why it returns a
-constructor?"*...
-Well, for two mainly reasons:
+Soon after, the **coro** keyword returns a constructor, and you may think *"but why it returns a
+constructor?"*... Well, for two mainly reasons:
 
 * *For code reuse:* you can use the coroutine on different places, without declare / return
 again it every time.
@@ -124,7 +123,7 @@ my &iter = coro -> $xs {
 ```
 
 The **iter** function above will receives an anonymous list and returns a *generator*
-function... Well remembered, now we will see generators.
+function... Well-minded, now we will see generators.
 
 
 
@@ -189,7 +188,7 @@ my &xrange = coro -> $min, $max {
 ##### Coroutine: "casting" generator to a lazy list #####
 
 If you want to access the values that a generator yields with a nice way, you can use **from**.
-The **from** function does the opposite from *iter* function above: instead taking an array and
+The **from** function does the opposite from **iter** function above: instead taking an array and
 returning a generator, it takes a reference to a generator and returns a lazy array to bind.
 
 Some examples:
