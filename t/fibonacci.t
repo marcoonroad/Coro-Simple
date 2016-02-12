@@ -17,7 +17,6 @@ my &fibonacci = coro {
     yield $_ for @xs;
 };
 
-# generator function
 my $get = fibonacci;
 
 my $result;

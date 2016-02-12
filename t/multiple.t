@@ -9,7 +9,6 @@ use Coro::Simple;
 
 plan 9;
 
-# map-like example
 my &transform = coro sub (&fn, *@xs) {
     for @xs -> $x, $y, $z {
         fn $x;
@@ -18,7 +17,6 @@ my &transform = coro sub (&fn, *@xs) {
     }
 }
 
-# constructor use
 my &get-next = transform -> $x {
     yield [ $x, $x + 1, $x ** 2 ] # will yields an anonymous list
 }, (45 ... 15);

@@ -28,7 +28,6 @@ sub clock (&block, [ $i, $f ]) {
     return clock &block, [ $i + 1, $f ];
 }
 
-# generator function
 my $get = pure-gen 10;
 
 # generates an error

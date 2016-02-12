@@ -2,14 +2,13 @@
 
 use v6;
 
-# 'from' test, "cast" a generator to lazy array
+# "casts" a generator to lazy array
 
 use Test;
 use Coro::Simple;
 
 plan 3;
 
-# iterator example
 my &iter = coro -> $xs {
     for @$xs -> $x {
         say "Yay! You get $x."; # just a action to check the "eval by need"...
@@ -17,7 +16,6 @@ my &iter = coro -> $xs {
     }
 }
 
-# generator function
 my $next = iter [ 3 ... -2 ];
 
 my @array := (from $next).map: * + 1; # bind the lazy array returned

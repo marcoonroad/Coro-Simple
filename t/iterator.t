@@ -9,7 +9,6 @@ use Coro::Simple;
 
 plan 6;
 
-# iterator example
 my &iter = coro sub (*@xs) {
     for @xs -> $x {
 	say "Yielding $x...\n";

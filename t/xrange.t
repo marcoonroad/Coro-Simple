@@ -9,14 +9,12 @@ use Coro::Simple;
 
 plan 5;
 
-# range coroutine
 my &xrange = coro -> $min, $max, $step {
     for $min, $min + $step ...^ $max -> $num {
 	yield $num;
     }
 }
 
-# generator function
 my $next = xrange (20, 30, 2);
 
 # first result

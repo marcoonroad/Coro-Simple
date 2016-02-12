@@ -9,19 +9,17 @@ use Coro::Simple;
 
 plan 16;
 
-my @tasks; # a queue of tasks
+my @tasks;
 
-# function to add some task (on last position)
 sub add-task ($block) {
     my $coro = coro $block;
-    @tasks.push: $coro( ); # enqueue a generator
+    @tasks.push: $coro( );
 }
 
-# to run the things
 sub dispatch-now ( ) {
     while ?@tasks {
-	my $task = @tasks.shift; # dequeue a task
-	@tasks.push: $task if $task( ); # enqueue again if it still alive
+	my $task = @tasks.shift;
+	@tasks.push: $task if $task( );
     }
 }
 
@@ -50,7 +48,6 @@ add-task {
     }
 }
 
-# begin to run the tasks
 spawn-task {
     for ^8 -> $i {
 	ok say "Pong -> $i";
