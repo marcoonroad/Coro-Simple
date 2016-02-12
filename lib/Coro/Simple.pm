@@ -8,7 +8,7 @@ sub coro (&block) is export {
     return sub (*@params) {
         # we explore the lazy evaluation property
         # to evaluate the computation on demand
-        my @yields := gather block |@params;
+        my @yields := (gather { block |@params }).list;
         my $index   = 0;
         # generator
         return sub ( ) {
