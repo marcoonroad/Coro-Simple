@@ -7,7 +7,7 @@ use v6;
 use Test;
 use Coro::Simple;
 
-plan 9;
+plan 7;
 
 my &transform = coro sub (&fn, *@xs) {
     for @xs -> $x, $y, $z {
@@ -23,12 +23,10 @@ my &get-next = transform -> $x {
 
 my $items;
 
-# iterating with delays of 1/2 second
-for ^9 {
+for ^7 {
     $items = get-next;
     ok defined $items;
     say $items;
-    sleep 0.5;
 }
 
 # end of test

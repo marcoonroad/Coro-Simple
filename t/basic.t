@@ -28,15 +28,12 @@ my $coro = coro {
     yield [ "Bye-bye!".comb ];
 };
 
-my $gen = $coro( );
-
+my $gen    = $coro( );
 my $result = $gen( );
 
 while ($result !~~ Bool) || (?$result) {
     ok defined $result;
-    say $result;
     $result = $gen( );
-    sleep 0.5;
 }
 
 # end of test

@@ -7,7 +7,7 @@ use v6;
 use Test;
 use Coro::Simple;
 
-plan 6;
+plan 3;
 
 my &iter = coro sub (*@xs) {
     for @xs -> $x {
@@ -16,10 +16,8 @@ my &iter = coro sub (*@xs) {
     }
 };
 
-for from iter 3 ... -2 -> $x {
-    ok say $x;
-    sleep 0.5;
+for from iter 1 ... 3 -> $x {
+    ok $x;
 }
-
 
 # end of test

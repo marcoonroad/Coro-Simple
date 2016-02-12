@@ -20,13 +20,11 @@ my $next = xrange (20, 30, 2);
 # first result
 my $value = $next( );
 
-# loop until $item becomes a Bool
-# value, delaying 0.5 second by cycle
-while $value ~~ Int {
+# loop until $item becomes False
+while $value {
     ok defined $value;
     say $value;
     $value = $next( );
-    sleep 0.5;
 }
 
 # end of test

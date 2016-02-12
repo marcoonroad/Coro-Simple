@@ -7,9 +7,7 @@ use v6;
 use Test;
 use Coro::Simple;
 
-plan 15;
-
-# TODO: fix the 'coro' to accept streams
+plan 5;
 
 # lazy fibonacci sequence generator
 my &fibonacci = coro {
@@ -21,14 +19,10 @@ my $get = fibonacci;
 
 my $result;
 
-# will generates the first 15
+# will generate the first 5
 # numbers from fibonacci sequence
-# (per 1/2 sec of delay, each)
-for ^15 {
-    $result = $get( );
-    ok defined $result;
-    say $result;
-    sleep 0.5;
+for ^5 {
+    ok $get( );
 }
 
 # end of test

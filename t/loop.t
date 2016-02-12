@@ -21,14 +21,8 @@ my $loop = (xtimes -> $x {
 }, 1, 3, 1);
 
 ok $loop( );
-
-sleep 0.5;
 ok $loop( );
-
-sleep 0.5;
 ok $loop( );
-
-sleep 0.5;
 nok $loop( ); # dead
 
 # end of test

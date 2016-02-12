@@ -7,7 +7,7 @@ use v6;
 use Test;
 use Coro::Simple;
 
-plan 16;
+plan 1;
 
 my @tasks;
 
@@ -21,6 +21,7 @@ sub dispatch-now ( ) {
 	my $task = @tasks.shift;
 	@tasks.push: $task if $task( );
     }
+    True;
 }
 
 # add a task and run getting started with it
@@ -28,30 +29,27 @@ sub spawn-task ($block) {
     my $coro = coro $block;
     my $task = $coro( );
     @tasks.push: $task if $task( );
-    return dispatch-now;
+    ok dispatch-now;
 }
 
 # tasks
 add-task {
     for ^3 -> $i {
-	ok say "Ping -> $i";
-	sleep 0.5;
+	say "Ping -> $i";
 	suspend;
     }
 }
 
 add-task {
     for ^5 {
-	ok say [~] <<\n WTF? \n\n>>;
-	sleep 0.5;
+	say [~] <<\n WTF? \n\n>>;
 	suspend;
     }
 }
 
 spawn-task {
     for ^8 -> $i {
-	ok say "Pong -> $i";
-	sleep 0.5;
+	say "Pong -> $i";
 	suspend;
     }
 }
