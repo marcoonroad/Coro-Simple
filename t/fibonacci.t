@@ -7,18 +7,16 @@ use v6;
 use Test;
 use Coro::Simple;
 
-plan 5;
+plan 3;
 
 # lazy fibonacci sequence generator
-my &fibonacci = coro {
-    my @xs := (^2, * + * ... *).list;
+my &gen-fib = coro sub ( ) {
+    my @xs := (1, 1, *+* ... *).list;
     yield $_ for @xs;
 };
 
-my $get = fibonacci;
+my $get = gen-fib( );
 
-# will generate the first 5 numbers from fibonacci sequence
-ok $get( ) == 0;
-ok $get( ) for ^4;
+ok $get( ) for 1 ... 3;
 
 # end of test
