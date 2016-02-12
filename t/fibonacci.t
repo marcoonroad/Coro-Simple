@@ -11,18 +11,14 @@ plan 5;
 
 # lazy fibonacci sequence generator
 my &fibonacci = coro {
-    my @xs := ^2, * + * ... *;
+    my @xs := (^2, * + * ... *).list;
     yield $_ for @xs;
 };
 
 my $get = fibonacci;
 
-my $result;
-
-# will generate the first 5
-# numbers from fibonacci sequence
-for ^5 {
-    ok $get( );
-}
+# will generate the first 5 numbers from fibonacci sequence
+ok $get( ) == 0;
+ok $get( ) for ^4;
 
 # end of test

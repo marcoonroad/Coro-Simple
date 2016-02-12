@@ -18,7 +18,7 @@ my &iter = coro sub (*@xs) {
 
 my $next = iter 3 ... -2;
 
-my @array := (from $next).map: * + 1; # bind the lazy array returned
+my @array := (from $next).map(* + 1).list; # bind the lazy array returned
 
 ok @array[ 0 ] == 4;
 ok @array[ 1 ] == 3;
