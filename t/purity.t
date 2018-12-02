@@ -11,26 +11,26 @@ plan 10;
 
 # pure generator function (read-only bind)
 my &pure-gen := coro -> $x {
-    my &recurse;
+  my &recurse;
 
-    &recurse = -> $n {
-	yield $n;
-	return recurse $n + 1;
-    }
+  &recurse = -> $n {
+    yield $n;
+    return recurse $n + 1;
+  }
 
-    recurse $x;
+  recurse $x;
 }
 
 sub clock (&block, [ $i, $f ]) {
-    return unless $i <= $f;
-    block $i;
-    return clock &block, [ $i + 1, $f ];
+  return unless $i <= $f;
+  block $i;
+  return clock &block, [ $i + 1, $f ];
 }
 
 my $get = pure-gen 10;
 
 clock -> $i {
-    ok $get( );
+  ok $get( ), "generator result is non-null";
 }, [ 1, 10 ];
 
 # end of test

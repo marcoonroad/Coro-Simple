@@ -1,5 +1,3 @@
-#!/usr/bin/perl6
-
 use v6;
 
 unit module Coro::Simple;

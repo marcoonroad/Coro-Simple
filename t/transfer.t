@@ -7,10 +7,13 @@ use v6;
 use Test;
 use Coro::Simple;
 
-plan 1;
+plan 2;
+
+my $expected = slurp './t/expected/transfer.out';
+my $handler = open './t/expected/transfer.out', :w;
 
 sub transfer (&generator) {
-    yield &generator;
+  yield &generator;
 }
 
 # impure 'begin' function
@@ -28,31 +31,31 @@ my $second;
 my $third;
 
 my &ping = coro -> $msg {
-    for ^3 -> $i {
-	say "$msg -> $i";
-	transfer $second;
-    }
+  for ^3 -> $i {
+    $handler.say: "$msg -> $i";
+    transfer $second;
+  }
 }
 
 my &wtf = coro {
-    for ^3 {
-	say "\n" ~ "WTF?" ~ "\n\n";
-	transfer $third;
-    }
+  for ^3 {
+    $handler.say: "\n" ~ "WTF?" ~ "\n\n";
+    transfer $third;
+  }
 }
 
 my &pong = coro -> $msg {
-    for ^3 -> $i {
-	say "$msg -> $i";
-	transfer $first;
-    }
+  for ^3 -> $i {
+    $handler.say: "$msg -> $i";
+    transfer $first;
+  }
 }
 
 $first  = ping "Ping!";
 $second = wtf;
 $third  = pong "Pong!";
 
-ok $first && $second && $third;
+ok $first && $second && $third, "we have valid generators at hand";
 
 begin $first; # begin the cycle with this generator
 
@@ -64,5 +67,9 @@ begin $first; # begin the cycle with this generator
 # 	$next( );
 #     }
 # }
+
+$handler.close;
+my $current = slurp './t/expected/transfer.out';
+is $current, $expected, "generated logs must match";
 
 # end of test
