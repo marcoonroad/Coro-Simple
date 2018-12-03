@@ -1,7 +1,7 @@
-#!/usr/bin/perl6
+#!/usr/bin/env perl6
 
 use v6;
-
+use lib 'lib';
 # "casts" a generator to lazy array
 
 use Test;

@@ -1,7 +1,7 @@
-#!/usr/bin/perl6
+#!/usr/bin/env perl6
 
 use v6;
-
+use lib 'lib';
 # array traversal  test
 
 use Test;

@@ -250,10 +250,12 @@ you wish to know more about. There's also a test about tasks...
 
 ##### Notes #####
 
-Pull requests are welcome.
-
-**Happy Hacking using this module!** :)
-
+To protect the coroutines against race conditions, some kind of thread-level
+ownership system is implemented (but without any sort of transfer neither borrow
+operations). Whenever you call `coro { ... }` to create a coroutine "template",
+the internals of this library binds the `$*THREAD` scope in which the `coro` was
+called. It means that trying to resume the coroutine's generator outside this
+associated `$*THREAD` scope, the generator fails without resuming anything.
 
 
 ### Tips and Tricks ###
@@ -272,6 +274,12 @@ And some short version (which receives an anonymous list) with:
 my &iter = coro { @$^xs.map: &yield }
 ```
 
+
+### Remarks ###
+
+Pull requests are welcome.
+
+**Happy Hacking using this module!** :)
 
 
 ### TODO ###
